@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://dejupwl6hg55y"]
+
+[ext_resource type="Texture2D" uid="uid://bcjlub7yupwht" path="res://entities/player/assets/sprites/river_raid_plane.png" id="1_bpddt"]
+[ext_resource type="Script" path="res://entities/player/scripts/player.gd" id="1_mpfi0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_034g6"]
+radius = 17.0
+height = 80.0
+
+[node name="Player" type="Area2D"]
+script = ExtResource("1_mpfi0")
+
+[node name="RiverRaidPlane" type="Sprite2D" parent="."]
+texture = ExtResource("1_bpddt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_034g6")
