@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsreqacid2lvf"]
+
+[ext_resource type="Texture2D" uid="uid://c22io83rfnppb" path="res://entities/weapons/assets/sprites/river_raid.png" id="1_4q8wo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c2dcu"]
+size = Vector2(8, 50)
+
+[node name="Ammo" type="Area2D"]
+
+[node name="RiverRaid" type="Sprite2D" parent="."]
+position = Vector2(-1, 0)
+texture = ExtResource("1_4q8wo")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_c2dcu")
