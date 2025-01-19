@@ -1,10 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://7my461dr41nk"]
+[gd_scene load_steps=8 format=3 uid="uid://7my461dr41nk"]
 
 [ext_resource type="PackedScene" uid="uid://dejupwl6hg55y" path="res://entities/player/player.tscn" id="1_fv46m"]
-[ext_resource type="Script" path="res://scenes/main/scripts/main.gd" id="1_sykcg"]
 [ext_resource type="Script" path="res://scenes/main/scripts/map_size.gd" id="2_00iu0"]
 [ext_resource type="Texture2D" uid="uid://dc2vrxtlau7ay" path="res://scenes/main/sprites/river_raid_tileset.png" id="2_4li23"]
-[ext_resource type="Script" path="res://scenes/main/scripts/camera_2d.gd" id="2_e3bng"]
 [ext_resource type="Script" path="res://scenes/main/scripts/map.gd" id="3_5s0nj"]
 [ext_resource type="Script" path="res://scenes/main/scripts/speed.gd" id="3_jpqcp"]
 
@@ -27,7 +25,6 @@ sources/0 = SubResource("TileSetAtlasSource_3i3ah")
 
 [node name="Main" type="Node2D"]
 position = Vector2(0, 1440)
-script = ExtResource("1_sykcg")
 
 [node name="Player" parent="." instance=ExtResource("1_fv46m")]
 z_index = 1
@@ -36,9 +33,9 @@ position = Vector2(1198, -62)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(81.999, -657.999)
 scale = Vector2(3, 3)
-script = ExtResource("2_e3bng")
 
 [node name="map_size" type="Label" parent="Player"]
+visible = false
 offset_left = -1175.0
 offset_top = -1352.0
 offset_right = -1103.0
@@ -48,6 +45,7 @@ script = ExtResource("2_00iu0")
 metadata/_edit_group_ = true
 
 [node name="speed" type="Label" parent="Player"]
+visible = false
 offset_left = -1162.0
 offset_top = -1314.0
 offset_right = -1115.0
