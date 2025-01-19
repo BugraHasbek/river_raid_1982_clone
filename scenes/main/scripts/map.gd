@@ -3,24 +3,78 @@ extends TileMapLayer
 const RIVER_RAID_ATLAS_ID = 0
 const INITIAL_MAP_BOTTOM_INDEX = -1
 
+const LAND              : Vector2 = Vector2(0, 0)
+const RIVER             : Vector2 = Vector2(1, 0)
+const HOUSE             : Vector2 = Vector2(2, 0)
+const RIVER_NARROW_LEFT : Vector2 = Vector2(3, 0)
+const ROAD              : Vector2 = Vector2(0, 1)
+const RIVER_NARROW_RIGHT: Vector2 = Vector2(1, 1)
+const RIVER_EXPAND_LEFT : Vector2 = Vector2(2, 1)
+const RIVER_EXPAND_RIGHT: Vector2 = Vector2(3, 1)
+
+var river_width: int
+var river_start_x: int
+
 func generate_map(visible_rect_global: Rect2) -> void:
 	var map_size = visible_rect_global.size
 	var tile_size = tile_set.tile_size
 	
-	# make sure floating point division is done and the result is always rounded up, so that map will always fill the whole screen
-	# TODO: use position of area to remove dependency to assumption that TileMapLayer and Camera2D are on top of each other
 	var map_size_x = ceil(float(map_size.x) / (tile_size.x * scale.x))
 	var map_size_y = ceil(float(map_size.y) / (tile_size.y * scale.y))
-	print("Generating a map with size: [%d,%d]" % [map_size_x, map_size_y])
-	for x in range(map_size_x):
-		for y in range(map_size_y):
-			var random_tile_x = randi_range(0, 3)
-			var random_tile_y = randi_range(0, 1)
+	
+	river_width = map_size_x / 2  # Initial width of the river
+	river_start_x = (map_size_x - river_width) / 2  # Center river
+	
+	var river_width_next: int = river_width
+	var river_start_x_next: int = river_start_x
+	
+	var river_expanded_left = false
+	var river_narrowed_right = false
+	
+	for y in range(map_size_y):
+		for x in range(map_size_x):
+			var tile = LAND
 			
-			# TileMapLayer is anchored to the left bottom of screen
-			# So tile [0, 0] would be below the screen. However we want the tileset to grow up, so we need to start filling the tilemap starting from 0, -1
-			set_cell(Vector2i(x, -y - 1), RIVER_RAID_ATLAS_ID, Vector2i(random_tile_x, random_tile_y), 0)  # Set the cell to the random tile
-			#print("Filling %d,%d" % [x, -y -1])
+			# Determine if the tile is part of the river or land
+			if x >= river_start_x and x < river_start_x + river_width:
+				## remove below line to allow generation of islands
+				tile = RIVER
+				#if randi_range(0, 10) < 2:  # Small chance for islands in the river
+					#tile = Vector2i(0, 0)  # Ground tile (island)
+				#else:
+					#tile = Vector2i(1, 0)  # River tile
+				print("River: x:%d, y:%d" % [x, y])
+			else:
+				print("Land: x:%d, y:%d" % [x, y])
+				tile = LAND
+				
+			# Add continuity by adjusting the river width
+			if x == river_start_x - 1 and randi_range(0, 5) > 3:  # Left edge of the river
+					tile = RIVER_EXPAND_LEFT
+					river_expanded_left = true
+					river_start_x_next = river_start_x_next - 1
+					river_width_next = river_width_next + 1
+					print("Expanding river left. x: %d, y:%d, river_start_x: %d, river_start_x_next: %d" % [x,y, river_start_x, river_start_x_next])
+			elif x == river_start_x and randi_range(0, 5) > 3 and not river_expanded_left:  # Narrowing river on the left
+				print("Narrowing river left")
+				tile = RIVER_NARROW_LEFT
+				river_start_x_next = river_start_x_next + 1
+				river_width_next = river_width_next - 1
+			elif x == river_start_x + river_width - 1 and randi_range(0, 5) > 3:  # Narrowing river on the right
+				print("Narrowing river right")
+				tile =RIVER_NARROW_RIGHT
+				river_narrowed_right = true
+				river_width_next = river_width_next - 1
+			elif x == river_start_x + river_width and randi_range(0, 5) > 3 and not river_narrowed_right:  # Right edge of the river
+					print("Expanding river right")
+					tile = RIVER_EXPAND_RIGHT
+					river_width_next = river_width_next + 1
+			set_cell(Vector2i(x, -y - 1), RIVER_RAID_ATLAS_ID, tile, 0)
+		
+		river_start_x = river_start_x_next
+		river_width = river_width_next
+		river_expanded_left = false
+		river_narrowed_right = false
 
 func update_tilemap_frustum(visible_rect_global: Rect2) -> void:
 	# the camera is restricted so it only moves vertically up
