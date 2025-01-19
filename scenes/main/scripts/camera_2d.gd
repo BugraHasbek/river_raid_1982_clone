@@ -1,8 +1,14 @@
 extends Camera2D
 
-func get_camera_bottom_world_y_coordinate() -> float:
-	var camera_global_position = global_position
-	var camera_viewport_height = get_viewport().get_visible_rect().size.y
-	var camera_bottom_visible_coordinate = camera_global_position.y + (camera_viewport_height / 2)
-	#if print_messages : print("camera_bottom_visible_coordinate: %d" % camera_bottom_visible_coordinate)
-	return camera_bottom_visible_coordinate
+class_name MovingCamera
+
+func get_global_rect() -> Rect2:
+	var viewport: Viewport = get_viewport()
+	var global_to_viewport: Transform2D = viewport.global_canvas_transform * get_canvas_transform()
+	var viewport_to_global: Transform2D = global_to_viewport.affine_inverse()
+	
+	var viewport_rect: Rect2 = get_viewport_rect()
+	var global_rect: Rect2 = viewport_to_global * viewport_rect
+	return global_rect
+	
+	
