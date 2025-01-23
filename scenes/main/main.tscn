@@ -1,12 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://7my461dr41nk"]
+[gd_scene load_steps=9 format=3 uid="uid://7my461dr41nk"]
 
 [ext_resource type="PackedScene" uid="uid://dejupwl6hg55y" path="res://entities/player/player.tscn" id="1_fv46m"]
 [ext_resource type="Script" path="res://scenes/main/scripts/main.gd" id="1_sykcg"]
-[ext_resource type="Script" path="res://scenes/main/scripts/map_size.gd" id="2_00iu0"]
 [ext_resource type="Texture2D" uid="uid://dc2vrxtlau7ay" path="res://scenes/main/sprites/river_raid_tileset.png" id="2_4li23"]
 [ext_resource type="Script" path="res://scenes/main/scripts/camera_2d.gd" id="2_e3bng"]
 [ext_resource type="Script" path="res://scenes/main/scripts/map.gd" id="3_5s0nj"]
-[ext_resource type="Script" path="res://scenes/main/scripts/speed.gd" id="3_jpqcp"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5a2c3"]
+font_size = 17
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3i3ah"]
 resource_name = "river_raid_tileset"
@@ -41,19 +42,18 @@ script = ExtResource("2_e3bng")
 [node name="map_size" type="Label" parent="Player"]
 offset_left = -1175.0
 offset_top = -1352.0
-offset_right = -1103.0
-offset_bottom = -1329.0
+offset_right = -1077.0
+offset_bottom = -1328.0
 text = "Map size = ?"
-script = ExtResource("2_00iu0")
+label_settings = SubResource("LabelSettings_5a2c3")
 metadata/_edit_group_ = true
 
 [node name="speed" type="Label" parent="Player"]
-offset_left = -1162.0
-offset_top = -1314.0
-offset_right = -1115.0
-offset_bottom = -1291.0
+offset_left = -1172.0
+offset_top = -1316.0
+offset_right = -1125.0
+offset_bottom = -1293.0
 text = "speed"
-script = ExtResource("3_jpqcp")
 metadata/_edit_group_ = true
 
 [node name="Map" type="TileMapLayer" parent="."]
